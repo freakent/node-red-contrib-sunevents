@@ -15,6 +15,7 @@
 -->
 
 <script type="text/x-red" data-template-name="sun events">   
+    
 	<div class="form-row">
         <label for="node-config-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
         <input type="text" id="node-input-latitude" placeholder="50.5">
@@ -34,6 +35,10 @@
         <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
     </div>
 
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field.                                       -->
     <div class="form-row">
@@ -75,7 +80,9 @@
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
         	testmode: {value:"N"},
-        	verbose: {value:"N"}
+        	verbose: {value:"N"},
+        	topic: {value:""},
+        	name: {value:""}
         },
         credentials: {
             latitude: {type: "text"}, // {value:"", required: true},   //  along with default values.
@@ -89,7 +96,7 @@
             return this.name||"sun events";
         },
         labelStyle: function() { // sets the class to apply to the label
-            return this.name?"node_label_italic":"";
+            return this.name ? "" : "node_label_italic";
         }
     });
 </script>

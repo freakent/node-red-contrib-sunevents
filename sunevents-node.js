@@ -34,6 +34,8 @@ module.exports = function(RED) {
 		
     	// Store local copies of the node configuration (as defined in the .html)
     	node.modes = {test: config.testmode, debug: config.verbose}
+    	node.name = config.name
+    	node.topic = config.topic
     	
     	var credentials = this.credentials
         if ((credentials) && (credentials.hasOwnProperty("latitude")) && (credentials.hasOwnProperty("longitude"))) { 
@@ -48,8 +50,9 @@ module.exports = function(RED) {
     
     	node.events.on("sunevent", function(event, date) {
     		var msg = {}
-    		msg.topic = event
-    		msg.payload = date
+    		msg.topic = node.topic || node.name || 'sun events'
+    		msg.payload = event
+    		msg.datetime = date
 
 			node.log(util.format("Injecting event %s for %s", event, date));
     		// send out the message to the rest of the workspace.
