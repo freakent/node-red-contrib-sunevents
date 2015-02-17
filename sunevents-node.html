@@ -1,0 +1,109 @@
+<!--
+  Copyright 2013-2015 Freak Enterprises
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="sun events">
+   <!-- data-template-name identifies the node type this is for              -->
+
+   <!-- Each of the following divs creates a field in the edit dialog.       -->
+   <!-- Generally, there should be an input for each property of the node.   -->
+   <!-- The for and id attributes identify the corresponding property        -->
+   <!-- (with the 'node-input-' prefix).                                     -->
+   <!-- The available icon classes are defined in Twitter Bootstrap          -->
+    <div class="form-row">
+        <label for="node-input-latitude"><i class="icon-tasks"></i> Latitude</label>
+        <input type="text" id="node-input-latitude" placeholder="50.5">
+    </div>
+    <div class="form-row">
+        <label for="node-input-longitude"><i class="icon-tasks"></i> Longitude</label>
+        <input type="text" id="node-input-longitude" placeholder="-0.1">
+    </div>
+    <!--
+    <div class="form-row">
+        <label for="node-input-events"><i class="icon-tasks"></i> Events</label>
+        <input type="text" id="node-input-events" placeholder="sunset, sunrise">
+    </div>
+    -->
+    <div class="form-row">
+        <label>Modes</label>
+        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-testmode" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
+    </div>
+
+    <!-- By convention, most nodes have a 'name' property. The following div -->
+    <!-- provides the necessary field.                                       -->
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="sun events">
+   <p>A node for node-red that generates events based on the position of the Sun at the appropriate time of day</p>
+   <p>Outputs <b>msg</b> object containing the event name in <b>msg.topic</b> and
+   the event date & time in the <b>msg.payload</b>. msg.payload is a String.</p>
+   <p>Calculations are performed using the excellent SunCalc module (https://github.com/mourner/suncalc) 
+   and the following sun events are output from this node:</p>
+   <ul>
+   		<li>sunrise: sunrise (top edge of the sun appears on the horizon)</li>
+		<li>sunriseEnd: sunrise ends (bottom edge of the sun touches the horizon)</li>
+		<li>goldenHourEnd: morning golden hour (soft light, best time for photography) ends</li>
+		<li>solarNoon: solar noon (sun is in the highest position)</li>
+		<li>goldenHour: evening golden hour starts</li>
+		<li>sunsetStart: sunset starts (bottom edge of the sun touches the horizon)</li>
+		<li>sunset: sunset (sun disappears below the horizon, evening civil twilight starts)</li>
+		<li>dusk: dusk (evening nautical twilight starts)</li>
+		<li>nauticalDusk: nautical dusk (evening astronomical twilight starts)</li>
+		<li>night: night starts (dark enough for astronomical observations)</li>
+		<li>nightEnd: night ends (morning astronomical twilight starts)</li>
+		<li>nauticalDawn: nautical dawn (morning nautical twilight starts)</li>
+		<li>dawn: dawn (morning nautical twilight ends, morning civil twilight starts)</li>
+		<li>nadir: nadir (darkest moment of the night, sun is in the lowest position)</li>
+	</ul>
+</script>
+
+<!-- Finally, the node type is registered along with all of its properties   -->
+<!-- The example below shows a small subset of the properties that can be set-->
+<script type="text/javascript">
+    RED.nodes.registerType('sun events',{
+        category: 'input',      // the palette category
+        defaults: {             // defines the editable properties of the node
+        	// events: {value:""},
+        	testmode: {value:"N"},
+        	verbose: {value:"N"},
+            latitude: {value:"", required: true},   //  along with default values.
+            longitude: {value:"", required:true}
+        },
+        color:"#FFCC66",
+        inputs:0,                // set the number of inputs - only 0 or 1
+        outputs:1,               // set the number of outputs - 0 to n
+        icon: "white-globe.png",    // set the icon (held in public/icons)
+        label: function() {      // sets the default label contents
+            return this.name||"Sun Events";
+        },
+        labelStyle: function() { // sets the class to apply to the label
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
