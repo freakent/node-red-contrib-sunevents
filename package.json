@@ -1,18 +1,29 @@
 {
-  "name": "node-red-contrib-sunevents",
-  "version": "0.0.1",
-  "description": "A node for node-red that generates events based on the position of the Sun at the appropriate time of day",
-  "dependencies": {
-    "cron": "^1.0.6",
-    "moment": "^2.9.0",
-    "suncalc": "^1.6.0"
-  },
-  "keywords": [
-    "node-red"
-  ],
-  "node-red": {
-    "nodes": {
-      "node-red-contrib-sunevents": "sunevents-node.js"
-    }
-  }
+	"name": "node-red-contrib-sunevents",
+	"version": "0.0.1",
+	"description": "A node for node-red that generates events based on the position of the Sun at the appropriate time of day",
+	"keywords": [
+		"node-red", "suncalc", "sunrise", "sunset"
+	],
+	"license": "Apache-2.0",
+	"author": {
+		"name" : "Martin Jarvis"
+	  , "email" : "freakent@gmail.com"
+	  , "url" : "http://freakent.co.uk"
+	},
+	"homepage": "http://freakent.co.uk",
+	"repository" : { 
+		"type" : "git"
+  	  , "url" : "https://github.com/freakent/node-red-contrib-sunevents.git"
+  	},
+  	"dependencies": {
+    	"cron": "^1.0.6",
+	    "moment": "^2.9.0",
+	    "suncalc": "^1.6.0"
+	},
+	"node-red": {
+    	"nodes": {
+      		"node-red-contrib-sunevents": "sunevents-node.js"
+    	}
+  	}
 }
