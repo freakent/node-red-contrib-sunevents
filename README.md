@@ -1,7 +1,7 @@
 A node for node-red that generates events based on the location of the Sun at the appropriate time of day. 
 
 Outputs an object called <b>msg</b> containing the event name in <b>msg.payload</b> and
-the event date & time in the <b>msg.datetime</b>. <b>msg.topic</b> can be set in the node's configuration 
+the event date & time in <b>msg.datetime</b>. The <b>msg.topic</b> can be set in the node's configuration 
 or it will default to the node name or "sun events".
 
 Calculations are performed using the excellent SunCalc module (https://github.com/mourner/suncalc) 
