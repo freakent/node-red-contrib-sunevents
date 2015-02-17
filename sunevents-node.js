@@ -44,7 +44,7 @@ module.exports = function(RED) {
     	node.events.on("sunevent", function(event, date) {
     		var msg = {};
     		msg.topic = event;
-    		msg.payload = {event: event, date: date};
+    		msg.payload = date;
 
 			node.log(util.format("Injecting event %s for %s", event, date));
     		// send out the message to the rest of the workspace.
