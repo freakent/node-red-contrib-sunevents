@@ -14,30 +14,15 @@
   limitations under the License.
 -->
 
-<!-- First, the content of the edit dialog is defined.                       -->
-
-<script type="text/x-red" data-template-name="sun events">
-   <!-- data-template-name identifies the node type this is for              -->
-
-   <!-- Each of the following divs creates a field in the edit dialog.       -->
-   <!-- Generally, there should be an input for each property of the node.   -->
-   <!-- The for and id attributes identify the corresponding property        -->
-   <!-- (with the 'node-input-' prefix).                                     -->
-   <!-- The available icon classes are defined in Twitter Bootstrap          -->
-    <div class="form-row">
-        <label for="node-input-latitude"><i class="icon-tasks"></i> Latitude</label>
+<script type="text/x-red" data-template-name="sun events">   
+	<div class="form-row">
+        <label for="node-config-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
         <input type="text" id="node-input-latitude" placeholder="50.5">
     </div>
     <div class="form-row">
-        <label for="node-input-longitude"><i class="icon-tasks"></i> Longitude</label>
+        <label for="node-input-longitude"><i class="fa fa-globe"></i> Longitude</label>
         <input type="text" id="node-input-longitude" placeholder="-0.1">
     </div>
-    <!--
-    <div class="form-row">
-        <label for="node-input-events"><i class="icon-tasks"></i> Events</label>
-        <input type="text" id="node-input-events" placeholder="sunset, sunrise">
-    </div>
-    -->
     <div class="form-row">
         <label>Modes</label>
         <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
@@ -89,18 +74,19 @@
     RED.nodes.registerType('sun events',{
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
-        	// events: {value:""},
         	testmode: {value:"N"},
-        	verbose: {value:"N"},
-            latitude: {value:"", required: true},   //  along with default values.
-            longitude: {value:"", required:true}
+        	verbose: {value:"N"}
+        },
+        credentials: {
+            latitude: {type: "text"}, // {value:"", required: true},   //  along with default values.
+            longitude: {type: "text"} // {value:"", required:true}
         },
         color:"#FFCC66",
         inputs:0,                // set the number of inputs - only 0 or 1
         outputs:1,               // set the number of outputs - 0 to n
-        icon: "white-globe.png",    // set the icon (held in public/icons)
+        icon: "white_golden_sun.png", //"white-globe.png",    // set the icon (held in public/icons)
         label: function() {      // sets the default label contents
-            return this.name||"Sun Events";
+            return this.name||"sun events";
         },
         labelStyle: function() { // sets the class to apply to the label
             return this.name?"node_label_italic":"";

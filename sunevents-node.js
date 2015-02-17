@@ -33,18 +33,23 @@ module.exports = function(RED) {
 		var node = this;
 		
     	// Store local copies of the node configuration (as defined in the .html)
-		node.latitude = config.latitude;
-		node.longitude = config.longitude;
-    	node.modes = {test: config.testmode, debug: config.verbose};
-    	node.topic = config.topic;
+    	node.modes = {test: config.testmode, debug: config.verbose}
+    	
+    	var credentials = this.credentials
+        if ((credentials) && (credentials.hasOwnProperty("latitude")) && (credentials.hasOwnProperty("longitude"))) { 
+			node.latitude = credentials.latitude
+			node.longitude = credentials.longitude
+        } else {
+            node.error("No latitude or longitude set.")
+        }
 
     	node.log(util.format("Calculating sun event times for %s, %s.", node.latitude, node.longitude))
-    	node.events = new SunEvents(this.latitude, this.longitude, this.modes);
+    	node.events = new SunEvents(this.latitude, this.longitude, this.modes)
     
     	node.events.on("sunevent", function(event, date) {
-    		var msg = {};
-    		msg.topic = event;
-    		msg.payload = date;
+    		var msg = {}
+    		msg.topic = event
+    		msg.payload = date
 
 			node.log(util.format("Injecting event %s for %s", event, date));
     		// send out the message to the rest of the workspace.
@@ -70,6 +75,12 @@ module.exports = function(RED) {
 
 	// Register the node by name. This must be called before overriding any of the
 	// Node functions.
-	RED.nodes.registerType("sun events", SunEventsNode);
+	
+	var credentials = {
+        latitude: {type: "text"},
+        longitude: {type: "text"}
+    }
+
+	RED.nodes.registerType("sun events", SunEventsNode, { credentials: credentials } );
 
 } 
