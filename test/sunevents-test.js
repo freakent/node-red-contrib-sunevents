@@ -25,6 +25,7 @@ var d = moment(); // Using moment just so to make manipulating dates simpler in 
 
 console.log("Testing with %s", d.toDate()); // Passing an actual date to SunCalc
 var events = new SunEvents(51.865522, -1.371732, {debug: true, test: true});
+console.log(util.inspect(events))
 
 // Adding a custom event to SunCalc
 events.suncalc.addTime(0.1, "breakfast", "sundowner");
@@ -39,7 +40,7 @@ events.on("debug", function(msg) {
 	console.log(msg);
 });
 
-events.init();
+events.start();
 
 console.log("%s events ready to fire", events.timers.length );
 

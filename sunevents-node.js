@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2015 Freak Enterprises
+ * Copyright 2013-2020 Freak Enterprises
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@
 
 module.exports = function(RED) {
 
-	var util = require("util");
-	var SunEvents = require('./lib/sunevents');
+	const util = require("util");
+	const SunEvents = require('./lib/sunevents');
 	
 	// The main node definition - most things happen in here
 	function SunEventsNode(config) {
@@ -30,14 +30,14 @@ module.exports = function(RED) {
     	// Create a RED node
     	RED.nodes.createNode(this, config);
 
-		var node = this;
+		let node = this;
 		
     	// Store local copies of the node configuration (as defined in the .html)
     	node.modes = {test: config.testmode, debug: config.verbose}
     	node.name = config.name
     	node.topic = config.topic
     	
-    	var credentials = this.credentials
+    	let credentials = this.credentials
         if ((credentials) && (credentials.hasOwnProperty("latitude")) && (credentials.hasOwnProperty("longitude"))) { 
 			node.latitude = credentials.latitude
 			node.longitude = credentials.longitude
@@ -65,8 +65,8 @@ module.exports = function(RED) {
     		});
     	}
     
-    	// Add any extra configuration to suncalc here
-    	node.events.init()
+    	// Add any extra configuration to suncalc here using node.events
+    	node.events.start()
     
     	node.on("close", function() {
 			// Called when the node is shutdown - eg on redeploy.
