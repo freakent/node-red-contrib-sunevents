@@ -22,7 +22,7 @@
 	"dependencies": {
 		"cron": "^1.0.6",
 		"moment": "^2.9.0",
-		"suncalc": "^1.6.0"
+		"suncalc": "^1.8.0"
 	},
 	"scripts": {
 		"test": "node test/sunevents-test"
