@@ -1,4 +1,4 @@
-# node-red-contrib-sunevent 
+# node-red-contrib-sunevents
 A node for node-red that generates events based on the location of the Sun at the appropriate time of day. 
 
 Outputs an object called <b>msg</b> containing the event name in <b>msg.payload</b> and
@@ -23,6 +23,9 @@ and the resulting sun events are output from this node at the appropriate time:
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
 This node can be used to make something happen based on a particular period of the day, for example switching on your lights at home at dusk.
+
+## How does it work
+When you first deploy the node (or start your node-red), this node calculates when each sun event will happen that day and schedules timer events for each sun event that has not already passed.  The suncalc library this node depends on calculates all the sun events for the curent day, so this node has to be triggered every day at midnight to set up the timers for the following day. If you enable the "Log event calculations?", you will be able to see all these calculations taking place each day. 
 
 ## History
 Version|Date|Description
