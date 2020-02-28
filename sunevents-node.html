@@ -17,7 +17,7 @@
 <script type="text/x-red" data-template-name="sun events">   
     
 	<div class="form-row">
-        <label for="node-config-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
+        <label for="node-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
         <input type="text" id="node-input-latitude" placeholder="50.5">
     </div>
     <div class="form-row">
@@ -51,13 +51,18 @@
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="sun events">
    <p>
-   A node for node-red that generates events based on the position of the Sun at the appropriate time of day.
+   A node for node-red that generates events based on the position of the Sun at the appropriate time of day. It can 
+   be used to make something happen based on a particular period of the 
+    day, for example switching on your lights at home at dusk every day.</p>
+
    </p>
+   <h3>Outputs</h3>
    <p>
    Outputs an object called <b>msg</b> containing the event name in <b>msg.payload</b> and
 the event date & time in the <b>msg.datetime</b>. The <b>msg.topic</b> can be set in the node's configuration 
 or it will default to the node name or "sun events".
    </p>
+   <h3>Events</h3>
    <p>
    Calculations are performed using the excellent SunCalc module (https://github.com/mourner/suncalc) 
    and the following sun events are output from this node:
@@ -77,7 +82,9 @@ or it will default to the node name or "sun events".
 		<li>nauticalDawn: nautical dawn (morning nautical twilight starts)</li>
 		<li>dawn: dawn (morning nautical twilight ends, morning civil twilight starts)</li>
 		<li>nadir: nadir (darkest moment of the night, sun is in the lowest position)</li>
-	</ul>
+    </ul>
+    
+
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
