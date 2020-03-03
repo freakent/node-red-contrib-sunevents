@@ -41,6 +41,7 @@ If you find this useful and you want to say thanks, feel free to buy me a coffee
 ## History
 Version|Date|Description
 -------|----|-----------
+2.0.3|2020-03-03|Updated Readme and docs
 2.0.2|2020-02-28|More debugging and closer attention to anywhere where timezones could cause an issue
 2.0.1|2020-02-27|Improved unit testing, example flow
 2.0.0|2020-02-24|Updated to run on node-red 1.0.3 and node.js 12.11
