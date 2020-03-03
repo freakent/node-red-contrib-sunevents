@@ -30,7 +30,8 @@ When you first deploy the node (or start your node-red), this node calculates wh
 ## History
 Version|Date|Description
 -------|----|-----------
-2.0.1|tbd|Improved unit testing, example flow
+2.0.2|2020-02-28|More debugging and closer attention to anywhere where timezones could cause an issue
+2.0.1|2020-02-27|Improved unit testing, example flow
 2.0.0|2020-02-24|Updated to run on node-red 1.0.3 and node.js 12.11
 0.5  |2015-03-02|Original released version
 
