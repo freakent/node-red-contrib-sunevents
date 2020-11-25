@@ -28,12 +28,13 @@ module.exports = function(RED) {
 	function SunEventsNode(config) {
 
     	// Create a RED node
-    	RED.nodes.createNode(this, config);
-
-		let node = this;
+		RED.nodes.createNode(this, config);
 		
+		let node = this;
+
     	// Store local copies of the node configuration (as defined in the .html)
-    	node.modes = {test: config.testmode, debug: config.verbose}
+		node.modes = {test: config.testmode, debug: config.verbose}
+		node.timeshift = config.timeshift
     	node.name = config.name
     	node.topic = config.topic
     	
@@ -45,8 +46,8 @@ module.exports = function(RED) {
             node.error("No latitude or longitude set.")
         }
 
-    	node.log(util.format("Calculating sun event times for %s, %s.", node.latitude, node.longitude))
-    	node.events = new SunEvents(this.latitude, this.longitude, this.modes)
+		node.log(util.format("Calculating sun event times for %s, %s. Timeshift: %s", node.latitude, node.longitude, this.timeshift))
+    	node.events = new SunEvents(this.latitude, this.longitude, this.modes, this.timeshift)
     
     	node.events.on("sunevent", function(event, date) {
     		var msg = {}

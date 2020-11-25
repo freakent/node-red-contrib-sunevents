@@ -25,6 +25,21 @@
         <input type="text" id="node-input-longitude" placeholder="-0.1">
     </div>
     <div class="form-row">
+        <label>Timeshift</label>
+        <select name="timeshift" id="node-input-timeshift" style="display: inline-block; width: auto; vertical-align: top;">
+            <option value="-60">60 Min earlier</option>
+            <option value="-45">45 Min earlier</option>
+            <option value="-30">30 Min earlier</option>
+            <option value="-15">15 Min earlier</option>
+            <option value="+0">Normal</option>
+            <option value="+15">15 Min later</option>
+            <option value="+30">15 Min later</option>
+            <option value="+45">15 Min later</option>
+            <option value="+60">15 Min later</option>
+          </select>
+        <label for="node-input-verbose" style="width: 70%;">Shift the time so that event starts earlier/later</label>
+    </div>
+    <div class="form-row">
         <label>Modes</label>
         <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
@@ -93,7 +108,8 @@ or it will default to the node name or "sun events".
     RED.nodes.registerType('sun events',{
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
-        	testmode: {value:"N"},
+            timeshift: {value: 0},
+            testmode: {value:"N"},
         	verbose: {value:"N"},
         	topic: {value:""},
         	name: {value:""}
