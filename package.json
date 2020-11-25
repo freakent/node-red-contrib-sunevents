@@ -26,7 +26,7 @@
 		"suncalc": "^1.8.0"
 	},
 	"scripts": {
-		"test": "node test/sunevents-test"
+		"test": "mocha test/sun-test"
 	},
 	"node-red": {
 		"nodes": {
