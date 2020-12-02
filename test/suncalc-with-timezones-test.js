@@ -49,5 +49,20 @@ describe('suncalc', function() {
 
     });
 
+    it('should return Yesterday nadir based on mid day for each hour Today', function() {
+        timezone_mock.register('US/Pacific')
+        let startdate = new Date('2020-11-30T00:30:00-08:00')
+        for (let i = 0; i < 24; i++) {
+            let date = moment(startdate).add(i, 'hour')
+            let midday = date.startOf('day').add(12, 'hours')
+            let times = suncalc.getTimes(midday, 37.53, -122.26)
+            let nadir = moment(times.nadir)
+            console.log("hour", i, date.format(), midday.format(), "Nadir:", nadir.format(), nadir.calendar(date))
+            assert.equal(nadir.calendar(date), 'Yesterday at 11:59 PM', date.format())
+        }
+        timezone_mock.unregister()
+
+    });
+
   });
 });
