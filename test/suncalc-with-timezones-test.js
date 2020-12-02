@@ -12,9 +12,9 @@ describe('suncalc', function() {
       times = suncalc.getTimes(date, 37.53, -122.26)
       dawn = moment(times.dawn)
       dusk = moment(times.dusk)
-      console.log(moment(date).format(), "Dawn:", dawn.format(), dawn.calendar(), "Dusk:", dusk.format(), dusk.calendar())
-      assert.equal(dawn.calendar(), 'Today at 6:17 AM')
-      assert.equal(dusk.calendar(), 'Today at 6:28 PM')
+      console.log(moment(date).format(), "Dawn:", dawn.format(), dawn.calendar(date), "Dusk:", dusk.format(), dusk.calendar(date))
+      assert.equal(dawn.calendar(date), 'Today at 6:17 AM')
+      assert.equal(dusk.calendar(date), 'Today at 6:28 PM')
       timezone_mock.unregister()
     });
 
@@ -26,8 +26,8 @@ describe('suncalc', function() {
             let times = suncalc.getTimes(date, 37.53, -122.26)
             let dawn = moment(times.dawn)
             let dusk = moment(times.dusk)
-            console.log("hour", i, date.format(), "Dawn:", dawn.format(), dawn.calendar(), "Dusk:", dusk.format(), dusk.calendar())
-            assert.equal(dawn.calendar(), 'Today at 6:17 AM', date.format())
+            console.log("hour", i, date.format(), "Dawn:", dawn.format(), dawn.calendar(date), "Dusk:", dusk.format(), dusk.calendar(date))
+            assert.equal(dawn.calendar(date), 'Today at 6:17 AM', date.format())
         }
         timezone_mock.unregister()
 
@@ -42,8 +42,8 @@ describe('suncalc', function() {
             let times = suncalc.getTimes(midday, 37.53, -122.26)
             let dawn = moment(times.dawn)
             let dusk = moment(times.dusk)
-            console.log("hour", i, date.format(), midday.format(), "Dawn:", dawn.format(), dawn.calendar(), "Dusk:", dusk.format(), dusk.calendar())
-            assert.equal(dawn.calendar(), 'Today at 6:17 AM', date.format())
+            console.log("hour", i, date.format(), midday.format(), "Dawn:", dawn.format(), dawn.calendar(date), "Dusk:", dusk.format(), dusk.calendar(date))
+            assert.equal(dawn.calendar(date), 'Today at 6:17 AM', date.format())
         }
         timezone_mock.unregister()
 
