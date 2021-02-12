@@ -21,12 +21,12 @@
 	},
 	"dependencies": {
 		"cron": "^1.8.2",
-		"moment": "^2.24.0",
-		"moment-timezone": "^0.5.28",
-		"suncalc": "^1.8.0"
+		"luxon": "^1.25.0",
+		"suncalc": "^1.8.0",
+		"uuid": "^8.3.2"
 	},
 	"scripts": {
-		"test": "node test/sunevents-test"
+		"test": "nodemon --exec jasmine"
 	},
 	"node-red": {
 		"nodes": {
@@ -34,9 +34,8 @@
 		}
 	},
 	"devDependencies": {
-		"chai": "^4.2.0",
-		"mocha": "^7.1.0",
-		"sinon": "^9.0.0",
+		"jasmine": "^3.6.4",
+		"nodemon": "^2.0.7",
 		"timezone-mock": "^1.0.17"
 	}
 }
