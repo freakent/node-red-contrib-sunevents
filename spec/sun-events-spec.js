@@ -27,6 +27,7 @@ const SunEvents = require('../lib/sun-events')
 const test_lat = 37.53
 const test_lng =  -122.26
 const test_date = new Date('2020-02-28T06:00:00-08:00')
+const test_event_date = new Date(test_date).setMinutes(test_date.getMinutes() + 30)
 
 describe("Sun Events", function() {
 
@@ -34,7 +35,7 @@ describe("Sun Events", function() {
         jasmine.clock().install()
 
         this.proxy = {
-            event: jasmine.createSpy('mock') // each tests needs it's own copy of the proxy in order to count the calls correctly
+            sunevent: jasmine.createSpy('mock') // each tests needs it's own copy of the proxy in order to count the calls correctly
         }
     })
 
@@ -64,7 +65,7 @@ describe("Sun Events", function() {
         expect(sunevents._events.map( e => e.event_name).join(", ")).toBe('dawn, sunrise, sunriseEnd, goldenHourEnd, solarNoon, goldenHour, sunsetStart, sunset, dusk, nauticalDusk, night, nadir, nightEnd, nauticalDawn, dawn, sunrise, sunriseEnd, goldenHourEnd, solarNoon, goldenHour, sunsetStart, sunset, dusk, nauticalDusk, night') 
 
         jasmine.clock().tick(1000 * 60 * 60 * 24) // Fast forward 24 hrs
-        expect(this.proxy.event).toHaveBeenCalledTimes(14) // 14 of the events should have fired
+        expect(this.proxy.sunevent).toHaveBeenCalledTimes(14) // 14 of the events should have fired
         expect(sunevents._events.length).toBe(11) // Should only have 11 of the 25 left
 
     })
@@ -86,7 +87,7 @@ describe("Sun Events", function() {
         expect(sunevents._events.length).toBeGreaterThan(10)
 
         jasmine.clock().tick(1000 * 60 * 60 * 48) // Fast forward 48 hrs
-        expect(this.proxy.event).toHaveBeenCalled() // 14 of the events should have fired
+        expect(this.proxy.sunevent).toHaveBeenCalled() // 14 of the events should have fired
         expect(sunevents._events.length).toBe(0) // Should only have 11 of the 25 left
 
     })
@@ -106,8 +107,22 @@ describe("Sun Events", function() {
 
         jasmine.clock().tick(1000 * 60 * 60 * 6)
 
-        expect(this.proxy.event).toHaveBeenCalledWith( "TEST", test_event_date.toJSDate() )
+        expect(this.proxy.sunevent).toHaveBeenCalledWith( "TEST", test_event_date.toJSDate() )
         expect(sunevents._events.length).toBe(0)
 
     })
+
+    it("returns the next event due to fire", function() {
+
+        let test_start_date = DateTime.local()
+        let test_event_date = DateTime.local().plus({ minutes: 30})
+
+        let sunevents = new SunEvents(this.proxy)
+
+        sunevents.add(test_start_date, "TEST", test_event_date)
+
+        expect(sunevents.next_event).toEqual({ event_name: "TEST", datetime: test_event_date.toISO()})
+
+    })
+
 })

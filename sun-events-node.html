@@ -14,42 +14,37 @@
   limitations under the License.
 -->
 
-<script type="text/x-red" data-template-name="sun events">   
+<script type="text/x-red" data-template-name="sun-events">   
     
-	<div class="form-row">
-        <label for="node-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
-        <input type="text" id="node-input-latitude" placeholder="50.5">
-    </div>
-    <div class="form-row">
-        <label for="node-input-longitude"><i class="fa fa-globe"></i> Longitude</label>
-        <input type="text" id="node-input-longitude" placeholder="-0.1">
-    </div>
-    <div class="form-row">
-        <label>Modes</label>
-        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
-    </div>
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-testmode" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="Topic">
-    </div>
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field.                                       -->
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+
+    <div class="form-row">
+        <label>Modes</label>
+        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
+    </div>
+
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-testmode" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
+    </div>
+
 </script>
 
 
 <!-- Next, some simple help text is provided for the node.                   -->
-<script type="text/x-red" data-help-name="sun events">
+<script type="text/x-red" data-help-name="sun-events">
    <p>
    A node for node-red that generates events based on the position of the Sun at the appropriate time of day. It can 
    be used to make something happen based on a particular period of the 
@@ -90,7 +85,7 @@ or it will default to the node name or "sun events".
 <!-- Finally, the node type is registered along with all of its properties   -->
 <!-- The example below shows a small subset of the properties that can be set-->
 <script type="text/javascript">
-    RED.nodes.registerType('sun events',{
+    RED.nodes.registerType('sun-events',{
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
         	testmode: {value:"N"},
@@ -98,12 +93,8 @@ or it will default to the node name or "sun events".
         	topic: {value:""},
         	name: {value:""}
         },
-        credentials: {
-            latitude: {type: "text"}, // {value:"", required: true},   //  along with default values.
-            longitude: {type: "text"} // {value:"", required:true}
-        },
         color:"#FFCC66",
-        inputs:0,                // set the number of inputs - only 0 or 1
+        inputs:1,                // set the number of inputs - only 0 or 1
         outputs:1,               // set the number of outputs - 0 to n
         icon: "white_golden_sun.png", //"white-globe.png",    // set the icon (held in public/icons)
         label: function() {      // sets the default label contents
