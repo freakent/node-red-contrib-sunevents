@@ -19,7 +19,7 @@
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field.                                       -->
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 
@@ -29,57 +29,114 @@
     </div>
 
     <div class="form-row">
-        <label>Modes</label>
-        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
-    </div>
-
-    <div class="form-row">
-        <label>&nbsp;</label>
+        <label>Options</label>
         <input type="checkbox" id="node-input-testmode" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
     </div>
+    <!-- 
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
+    </div>
+    -->
 
 </script>
 
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="sun-events">
-   <p>
-   A node for node-red that generates events based on the position of the Sun at the appropriate time of day. It can 
-   be used to make something happen based on a particular period of the 
-    day, for example switching on your lights at home at dusk every day.</p>
-
-   </p>
-   <h3>Outputs</h3>
-   <p>
-   Outputs an object called <b>msg</b> containing the event name in <b>msg.payload</b> and
-the event date & time in the <b>msg.datetime</b>. The <b>msg.topic</b> can be set in the node's configuration 
-or it will default to the node name or "sun events".
-   </p>
-   <h3>Events</h3>
-   <p>
-   Calculations are performed using the excellent SunCalc module (https://github.com/mourner/suncalc) 
-   and the following sun events are output from this node:
-   </p>
-   <ul>
-   		<li>sunrise: sunrise (top edge of the sun appears on the horizon)</li>
-		<li>sunriseEnd: sunrise ends (bottom edge of the sun touches the horizon)</li>
-		<li>goldenHourEnd: morning golden hour (soft light, best time for photography) ends</li>
-		<li>solarNoon: solar noon (sun is in the highest position)</li>
-		<li>goldenHour: evening golden hour starts</li>
-		<li>sunsetStart: sunset starts (bottom edge of the sun touches the horizon)</li>
-		<li>sunset: sunset (sun disappears below the horizon, evening civil twilight starts)</li>
-		<li>dusk: dusk (evening nautical twilight starts)</li>
-		<li>nauticalDusk: nautical dusk (evening astronomical twilight starts)</li>
-		<li>night: night starts (dark enough for astronomical observations)</li>
-		<li>nightEnd: night ends (morning astronomical twilight starts)</li>
-		<li>nauticalDawn: nautical dawn (morning nautical twilight starts)</li>
-		<li>dawn: dawn (morning nautical twilight ends, morning civil twilight starts)</li>
-		<li>nadir: nadir (darkest moment of the night, sun is in the lowest position)</li>
-    </ul>
+    <p><i>node-red-contrib-sunevents</i></p>
+    <p>A node for node-red that generates events based on the location of the Sun at the appropriate time of day. 
+    This node can be used to make something happen based on a particular period of the day, for example switching 
+    on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
     
+    <p>On receiving a msg.payload containing latitude and longitude coordinates (in decimal), this 
+    node outputs a series of Sun event objects at the appropriate time for each.</p>
+    
+    <p>Calculations are performed using the excellent <a href="https://github.com/mourner/suncalc">SunCalc module</a> and 
+    the resulting sun events are output from this node at the appropriate time:</p>
+    
+    <ul>
+      <li>sunrise: sunrise (top edge of the sun appears on the horizon)</li>
+      <li>sunriseEnd: sunrise ends (bottom edge of the sun touches the horizon)</li>
+      <li>goldenHourEnd: morning golden hour (soft light, best time for photography) ends</li>
+      <li>solarNoon: solar noon (sun is in the highest position)</li>
+      <li>goldenHour: evening golden hour starts</li>
+      <li>sunsetStart: sunset starts (bottom edge of the sun touches the horizon)</li>
+      <li>sunset: sunset (sun disappears below the horizon, evening civil twilight starts)</li>
+      <li>dusk: dusk (evening nautical twilight starts)</li>
+      <li>nauticalDusk: nautical dusk (evening astronomical twilight starts)</li>
+      <li>night: night starts (dark enough for astronomical observations)</li>
+      <li>nightEnd: night ends (morning astronomical twilight starts)</li>
+      <li>nauticalDawn: nautical dawn (morning nautical twilight starts)</li>
+      <li>dawn: dawn (morning nautical twilight ends, morning civil twilight starts)</li>
+      <li>nadir: nadir (darkest moment of the night, sun is in the lowest position)</li>
+    </ul>
 
+    <h2>Usage</h2>
+
+    <p><i>Please Note: The latest version (version 3) of this node works a little differently to previous versions and will 
+        require a change to your flow if you are upgrading from a previous version.</i></p>       
+        
+    <h3>Input</h3>
+    <p>This node requires a latitude and longitude in decimal form to be passed to it in the msg.payload, either :</p>
+    <pre>
+msg.payload.latitude = 18.7382273
+msg.payload.longitude = -64.3201179
+    </pre>
+    or
+    
+    <pre>
+msg.payload.lat = 51.501364
+msg.payload.lng = -0.1440787
+    </pre>
+
+    <P>Calculations are performed using the Latitude and Longitude that are passed in via the payload. If you have a 
+    frequently changing GPS position it will update the Sun event calculations every time it receives a new latitude 
+    and longitude in the payload.</P>
+    
+    <h3>Output</h3>
+    <P>The Sun event name is output in msg.payload.sunevent, preserving any other payload values set earlier in the 
+    flow. It also outputs the event name and date & time of the event in msg.sunevent object if you need a more complete 
+    set of Sun event data. The msg.topic can also be set in the node's configuration.</P>
+    
+    <h3>Config</h3>
+    <dl>
+    <dt>Name:</dt> <dd>Override the default name of this node in the flow </dd>
+    <dt>Topic:</dt> <dd>Set the topic used in the flow from this point onwards </dd>
+    <dt>Options: </dt> 
+    <dd>
+    <dl>
+        <dt>Make Hours seem like minutes (test mode): <dd>Reduces the time you have to wait for an event to fire, 
+            1 hour becomes 1 minute. Obviously the Sun events won't fire at their correct times but if you are 
+            testing your flow it means you won't have to wait for hours to see that things are working.</dd>
+    </dl>
+    </dd>
+    </dl>
+
+    <h2>Daily Events</h2>
+    <p>Each time this node receives a new msg.payload to it's input it calculates 1 to 2 days worth of Sun events, 
+    dependant on what time of day it is invoked. To have the node output events every day, you must inject a 
+    payload into the node at least once every 24 hours. The easiest way to do this is with the node-red Inject node.</p>
+    
+    <p>Unlike previous versions of this node, this node DOES NOT perform it's own daily scheduling. In keeping with 
+    the <a href="https://nodered.org/docs/creating-nodes/#general-guidance">general guidance</a> for node-red nodes 
+    you must use some other node to invoke the sun-events node at a time and 
+    frequency appropriate for your use case. The Inject node supplied with node-red is a good candidate for this and 
+    is demonstrated in the supplied example flow. Please note, I show the use of 2 inject nodes, one to invoke the flow 
+    on deployment and the other to invoke the flow at a fixed time each day.</p>
+        
+    <h2>Example Flow</h2>
+    There is an example flow you can import supplied with this node.
+    <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow%20diagram.png">
+    
+    <h2><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url">Say Thanks</a></h2>
+    <p>If you find this useful and you want to say thanks, feel free to buy me a coffee using the link below.</p>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url">
+        <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/master/docs/thankyou.jpg" title="Say Thanks"/>
+    </a>
+    
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
