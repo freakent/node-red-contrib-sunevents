@@ -1,25 +1,27 @@
 /**
-* Copyright 2013-2021 Freak Enterprises
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*  This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
-*
-*  Module Dependencies
-* 	- SunCalc (https://github.com/mourner/suncalc)
-*   - luxon (http://momentjs.com/)
-*    
-**/
+ * Copyright 2013-2021 Freak Enterprises
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
+ *
+ *  Module Dependencies
+ *  - node-red (https://nodered.org/)
+ * 	- SunCalc (https://github.com/mourner/suncalc)
+ *  - Luxon (http://moment.github.io./luxon)
+ *  - uuid (https://www.npmjs.com/package/uuid)
+ *  - debug (https://www.npmjs.com/package/debug)
+ **/
 
 const { DateTime } = require('luxon')
 const SunEvents = require('../lib/sun-events')

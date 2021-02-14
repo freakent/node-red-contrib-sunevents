@@ -15,7 +15,7 @@
 		"email": "freakent@gmail.com",
 		"url": "http://freakent.co.uk"
 	},
-	"homepage": "http://freakent.co.uk",
+	"homepage": "https://github.com/freakent/node-red-contrib-sunevents/blob/master/README.md",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/freakent/node-red-contrib-sunevents.git"
