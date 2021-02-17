@@ -52,7 +52,7 @@
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="sun-events">
     <p><i>node-red-contrib-sunevents</i></p>
-    <p>A node for node-red that generates events based on the location of the Sun at the appropriate time of day. 
+    <p>A node that generates events based on the location of the Sun at the appropriate time of day. 
     This node can be used to make something happen based on a particular period of the day, for example switching 
     on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
     
@@ -60,7 +60,7 @@
     node outputs a series of Sun event objects at the appropriate time for each.</p>
     
     <p>Calculations are performed using the excellent <a href="https://github.com/mourner/suncalc">SunCalc module</a> and 
-    the resulting sun events are output from this node at the appropriate time:</p>
+    the resulting sun events are output from this node at the appropriate time for each:</p>
     
     <ul>
       <li>sunrise: sunrise (top edge of the sun appears on the horizon)</li>
@@ -83,7 +83,11 @@
 
     <p><i>Please Note: The latest version (version 3) of this node works a little differently to previous versions and will 
         require a change to your flow if you are upgrading from a previous version.</i></p>       
-        
+    
+    <p>Each time this node receives a new `msg.payload` to it's input, it calculates up to 2 days worth of 
+        Sun events (depending on what time of day it is invoked). To have the node output events reliably every day, you should 
+        inject a latitude and longitude payload into the node at least once every 24 hours. The easiest way to do this is with the node-red Inject node.</p>
+
     <h3>Input</h3>
     <p>This node requires a latitude and longitude in decimal form to be passed to it in the msg.payload, either :</p>
     <pre>
@@ -108,36 +112,38 @@ msg.payload.lng = -0.1440787
     
     <h3>Config</h3>
     <dl>
-    <dt>Name:</dt> <dd>Override the default name of this node in the flow </dd>
-    <dt>Topic:</dt> <dd>Set the topic used in the flow from this point onwards </dd>
+    <dt><i>Name</i>:</dt> <dd>Override the default name of this node in the flow </dd>
+    <dt><i>Topic</i>:</dt> <dd>Set the topic used in the flow from this point onwards </dd>
     <dt>Options: </dt> 
     <dd>
     <dl>
-        <dt>Make Hours seem like minutes (test mode): <dd>Reduces the time you have to wait for an event to fire, 
+        <dt><i>Make Hours seem like minutes (test mode)</i>: <dd>Reduces the time you have to wait for an event to fire, 
             1 hour becomes 1 minute. Obviously the Sun events won't fire at their correct times but if you are 
             testing your flow it means you won't have to wait for hours to see that things are working.</dd>
     </dl>
     </dd>
     </dl>
-
-    <h2>Daily Events</h2>
-    <p>Each time this node receives a new msg.payload to it's input it calculates 1 to 2 days worth of Sun events, 
-    dependant on what time of day it is invoked. To have the node output events every day, you must inject a 
-    payload into the node at least once every 24 hours. The easiest way to do this is with the node-red Inject node.</p>
-    
-    <p>Unlike previous versions of this node, this node DOES NOT perform it's own daily scheduling. In keeping with 
-    the <a href="https://nodered.org/docs/creating-nodes/#general-guidance">general guidance</a> for node-red nodes 
-    you must use some other node to invoke the sun-events node at a time and 
-    frequency appropriate for your use case. The Inject node supplied with node-red is a good candidate for this and 
-    is demonstrated in the supplied example flow. Please note, I show the use of 2 inject nodes, one to invoke the flow 
-    on deployment and the other to invoke the flow at a fixed time each day.</p>
         
     <h2>Example Flow</h2>
-    There is an example flow you can import supplied with this node.
-    <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow%20diagram.png">
-    
+
+    <p>Unlike previous versions of this node, this node <b>does not</b> perform it's own daily scheduling. In keeping with 
+        the <a href="https://nodered.org/docs/creating-nodes/#general-guidance">general guidance</a> for node-red nodes, 
+        you must now use some other node to invoke the sun-events node at a time and 
+        frequency appropriate for your use case. The Inject node supplied with node-red is a good candidate for this and 
+        is demonstrated in the supplied example flow. Please note, I show the use of 2 inject nodes, one to invoke the flow 
+        on deployment and the other to invoke the flow at a fixed time each day.</p>
+            
+    <p>There are two example flows provided, one for a fixed GPS positioned injected daily and one for a stream of GPS coordinates that continually updates with your position.
+        There is an example flow you can import supplied with this node.</p>
+
+    <p>Example 1: Fixed GPS position (<a href="./examples/sun-events-example-flows.json">Download</a>)
+    <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-1.png">
+
+    <p>Example 2: Stream of GPS positions (<a href="./examples/sun-events-gps-stream-example-flows.json">Download</a>)
+    <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-2.png">
+
     <h2><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url">Say Thanks</a></h2>
-    <p>If you find this useful and you want to say thanks, feel free to buy me a coffee using the link below.</p>
+    <p>If you find this node useful and you want to say thanks, feel free to buy me a coffee using the link below.</p>
     <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url">
         <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/master/docs/thankyou.jpg" title="Say Thanks"/>
     </a>
