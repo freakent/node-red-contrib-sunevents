@@ -23,10 +23,11 @@
  *  - debug (https://www.npmjs.com/package/debug)
  **/
 const helper = require("node-red-node-test-helper")
-const SunEventsNode = require("../sun-events-node.js")
+const SunEventsNode = require("../lib/sun-events-node.js")
 
 const test_lat = 37.53
 const test_lng =  -122.26
+const events = ['sunrise', 'sunriseEnd', 'goldenHourEnd', 'solarNoon', 'goldenHour', 'sunsetStart', 'sunset', 'dusk', 'nauticalDusk', 'night', 'nightEnd', 'nauticalDawn', 'dawn', 'nadir']
 
 describe('sun-events Node', function () {
     beforeEach(function (done) {
@@ -61,7 +62,9 @@ describe('sun-events Node', function () {
             var n1 = helper.getNode("n1");
             n2.on("input", function (msg) {
                 try {
-                    expect(msg.payload).toEqual({ lat: test_lat, lng: test_lng, sunevent: 'nadir'})
+                    expect(msg.payload.lat).toEqual(test_lat)
+                    expect(msg.payload.lng).toEqual(test_lng)
+                    expect(events.includes(msg.payload.sunevent)).toBeTrue()
                     done();    
                 } catch(err) {
                     done(err)
@@ -71,4 +74,28 @@ describe('sun-events Node', function () {
             jasmine.clock().tick(1000 * 60 * 60 * 24)
         });
     });
+
+    it('should initialise a set of sun events with lat and lng as strings', function (done) {
+        let test_lat_str = "51.501364"
+        let test_lng_str = "-0.1440787"
+        var flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] },
+        { id: "n2", type: "helper" }];
+        helper.load(SunEventsNode, flow, function () {
+            var n2 = helper.getNode("n2");
+            var n1 = helper.getNode("n1");
+            n2.on("input", function (msg) {
+                try {
+                    expect(msg.payload.lat).toEqual(test_lat_str)
+                    expect(msg.payload.lng).toEqual(test_lng_str)
+                    expect(events.includes(msg.payload.sunevent)).toBeTrue()
+                    done();    
+                } catch(err) {
+                    done(err)
+                }
+            });
+            n1.receive({ payload: {lat: test_lat_str, lng: test_lng_str }});
+            jasmine.clock().tick(1000 * 60 * 60 * 24)
+        });
+    });
+
 });

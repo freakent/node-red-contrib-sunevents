@@ -31,7 +31,7 @@
 	},
 	"node-red": {
 		"nodes": {
-			"node-red-contrib-sunevents": "sun-events-node.js"
+			"node-red-contrib-sunevents": "lib/sun-events-node.js"
 		}
 	},
 	"devDependencies": {
