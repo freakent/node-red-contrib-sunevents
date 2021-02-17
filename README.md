@@ -1,5 +1,5 @@
 # node-red-contrib-sunevents
-A node for node-red that generates events based on the location of the Sun at the appropriate time of day. This node can be used to make something happen based on a particular period of the day, for example switching on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir").
+A node that generates events based on the location of the Sun at the appropriate time of day. This node can be used to make something happen based on a particular period of the day, for example switching on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir").
 
 On receiving a `msg.payload` containing latitude and longitude coordinates (in decimal), this node outputs a series of Sun event objects at the appropriate time for each. 
 
