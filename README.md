@@ -65,10 +65,10 @@ Unlike previous versions of this node, this node DOES NOT perform it's own daily
 
 There are two example flows provided, one for a fixed GPS positioned injected daily and one for a stream of GPS coordinates that continually updates with your position.
 
-Example 1: Fixed GPS position [Download](./examples/sun-events-example-flows.json)
+Example 1: Fixed GPS position [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-example-flows.json)
 ![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-1.png "Example Flow")
 
-Example 2: Stream of GPS positions [Download](./examples/sun-events-gps-stream-example-flows.json)
+Example 2: Stream of GPS positions [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-gps-stream-example-flows.json)
 ![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-2.png "Example Flow")
 
 
