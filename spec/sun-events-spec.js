@@ -121,6 +121,7 @@ describe("Sun Events", function() {
 
         let sunevents = new SunEvents(this.proxy)
 
+        expect(sunevents.next_event).toBeNull()
         sunevents.add(test_start_date, "TEST", test_event_date)
 
         expect(sunevents.next_event).toEqual({ event_name: "TEST", datetime: test_event_date.toISO()})

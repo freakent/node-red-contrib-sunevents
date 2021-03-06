@@ -51,6 +51,14 @@
         <p>Please note: values for latitude and longitude are now supplied to this node via the <i>msg.payload</i> in latitude and longitude properties. 
             Please update your flow and refer to the documentation for more details.</p>
     </div>
+    <div class="form-row">
+        <label for="node-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
+        <input type="text" id="node-input-latitude" placeholder="50.5">
+    </div>
+    <div class="form-row">
+        <label for="node-input-longitude"><i class="fa fa-globe"></i> Longitude</label>
+        <input type="text" id="node-input-longitude" placeholder="-0.1">
+    </div>
 
 </script>
 
@@ -166,6 +174,10 @@ msg.payload.lng = -0.1440787
         	verbose: {value:"N"},
         	topic: {value:""},
         	name: {value:""}
+        },
+        credentials: {
+            latitude: {type: "text"},  
+            longitude: {type: "text"}  
         },
         color:"#FFCC66",
         inputs:1,                // set the number of inputs - only 0 or 1

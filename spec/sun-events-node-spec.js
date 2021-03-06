@@ -30,6 +30,7 @@ const test_lng =  -122.26
 const events = ['sunrise', 'sunriseEnd', 'goldenHourEnd', 'solarNoon', 'goldenHour', 'sunsetStart', 'sunset', 'dusk', 'nauticalDusk', 'night', 'nightEnd', 'nauticalDawn', 'dawn', 'nadir']
 
 describe('sun-events Node', function () {
+
     beforeEach(function (done) {
         jasmine.clock().install()
         helper.startServer(done);
@@ -37,8 +38,9 @@ describe('sun-events Node', function () {
 
     afterEach(function (done) {
         jasmine.clock().uninstall()
-        helper.unload()
-        helper.stopServer(done);
+        helper.unload().then(function() {
+            helper.stopServer(done);
+        })
     });
 
     it('should be loaded', function (done) {
@@ -55,34 +57,32 @@ describe('sun-events Node', function () {
     });
 
     it('should initialise a set of sun events', function (done) {
-        var flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] },
-        { id: "n2", type: "helper" }];
+        var flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, function () {
-            var n2 = helper.getNode("n2");
             var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
             n2.on("input", function (msg) {
                 try {
-                    expect(msg.payload.lat).toEqual(test_lat)
-                    expect(msg.payload.lng).toEqual(test_lng)
+                    expect(msg.payload.latitude).toEqual(test_lat)
+                    expect(msg.payload.longitude).toEqual(test_lng)
                     expect(events.includes(msg.payload.sunevent)).toBeTrue()
                     done();    
                 } catch(err) {
                     done(err)
                 }
             });
-            n1.receive({ payload: {lat: test_lat, lng: test_lng }});
+            n1.receive({ payload: {latitude: test_lat, longitude: test_lng }});
             jasmine.clock().tick(1000 * 60 * 60 * 24)
         });
     });
 
     it('should initialise a set of sun events with lat and lng as strings', function (done) {
-        let test_lat_str = "51.501364"
-        let test_lng_str = "-0.1440787"
-        var flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] },
-        { id: "n2", type: "helper" }];
+        const test_lat_str = "51.501364"
+        const test_lng_str = "-0.1440787"
+        const flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, function () {
-            var n2 = helper.getNode("n2");
-            var n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+            let n1 = helper.getNode("n1");
             n2.on("input", function (msg) {
                 try {
                     expect(msg.payload.lat).toEqual(test_lat_str)
@@ -97,5 +97,31 @@ describe('sun-events Node', function () {
             jasmine.clock().tick(1000 * 60 * 60 * 24)
         });
     });
+
+    it('should use lat and long from node configuration if none supplied in msg.payload', function(done) {
+        const test_credentials = { "n1": {'latitude': "51.501364", 'longitude': '-0.1440787' } }
+        const flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+        helper.load(SunEventsNode, flow, test_credentials, function () {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+            expect(n2).toEqual(jasmine.objectContaining({ type: 'helper' })) // Don't forget to pass "done" into the it function !!!
+            n2.on("input", function (msg) {
+                try {
+                    expect(msg.payload.lat).toEqual(test_credentials.latitude)
+                    expect(msg.payload.lng).toEqual(test_credentials.longitude)
+                    expect(events.includes(msg.payload.sunevent)).toBeTrue()
+                    done();    
+                } catch(err) {
+                    done(err)
+                }
+            });
+            spyOn(n1, "error")
+            //n1.receive({ payload: {lat: test_credentials.latitude, lng: test_credentials.longitude }});
+            n1.receive({ payload: new Date() });
+            expect(n1.error).not.toHaveBeenCalled()
+            jasmine.clock().tick(1000 * 60 * 60 * 24)
+        });
+
+    })
 
 });

@@ -33,3 +33,5 @@ node_modules
 .jshintrc
 
 .vscode
+
+*.backup
