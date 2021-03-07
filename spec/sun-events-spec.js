@@ -13,14 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
- *
- *  Module Dependencies
- *  - node-red (https://nodered.org/)
- * 	- SunCalc (https://github.com/mourner/suncalc)
- *  - Luxon (http://moment.github.io./luxon)
- *  - uuid (https://www.npmjs.com/package/uuid)
- *  - debug (https://www.npmjs.com/package/debug)
+ * node-red-contrib-sunevents 
+ * This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
  **/
 
 const { DateTime } = require('luxon')

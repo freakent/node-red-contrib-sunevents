@@ -20,9 +20,17 @@ and the resulting Sun events are output from this node at the appropriate time:
 * dawn: dawn (morning nautical twilight ends, morning civil twilight starts)
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
-## Usage
-<i>Please Note: The latest version (version 3) of this node works a little differently to previous versions and will require a change to your flow if you are upgrading from a previous version.</i>
+## Upgrading from v2.x
+The latest version (v3.0) of this node works a little differently to previous versions and will 
+require a change to your flow if you are upgrading from a previous version.
 
+The latitude and longitude you defined in the node's configuration can be used to calculate 
+Sun events if no latitude and longitude coordinates 
+are passed in the <i>msg.payload</i>. You <b>must</b> still inject a payload at regular 
+intervals to recalculate the next 24 hour's events, but this payload can be any value.
+
+
+## Usage
 Each time this node receives a new `msg.payload` to it's input, it calculates up to 2 days worth of Sun events (depending on what time of day it is invoked). To have the node output events reliably every day, you should inject a latitude and longitude payload into the node at least once every 24 hours. The easiest way to do this is with the node-red Inject node.
 
 

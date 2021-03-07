@@ -19,7 +19,7 @@
 
 -->
 
-<script type="text/x-red" data-template-name="sun-events">   
+<script type="text/x-red" data-template-name="sun events">   
     
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field.                                       -->
@@ -48,8 +48,12 @@
     <hr>
     <div class="form-row">
         <p><i class="fa fa-warning"></i> Latitude & Longitude</p>
-        <p>Please note: values for latitude and longitude are now supplied to this node via the <i>msg.payload</i> in latitude and longitude properties. 
-            Please update your flow and refer to the documentation for more details.</p>
+        <p>Please note: since v3.0 the preferred way of providing values for latitude and longitude is 
+            via properties in the <i>msg.payload</i>. These parameters below are provided for backwards 
+            compatibility and to help make the upgrade to v3 easier. Parameters passed via 
+            <i>msg.payload</i> take precedence over the values below. You <b>must</b> still inject a payload 
+            at regular intervals to trigger event calculations (a dummy payload will work fine). Please 
+            see the documentation for more details.
     </div>
     <div class="form-row">
         <label for="node-input-latitude"><i class="fa fa-globe"></i> Latitude</label>
@@ -64,41 +68,49 @@
 
 
 <!-- Next, some simple help text is provided for the node.                   -->
-<script type="text/x-red" data-help-name="sun-events">
-    <p><i>node-red-contrib-sunevents</i></p>
+<script type="text/x-red" data-help-name="sun events">
+    <p><i>node-red-contrib-sunevents v3.0</i></p>
     <p>A node that generates events based on the location of the Sun at the appropriate time of day. 
-    This node can be used to make something happen based on a particular period of the day, for example switching 
-    on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
+    This node can be used to make something happen based on a particular period of the day, for example, switching 
+    on your lights at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
     
     <p>On receiving a msg.payload containing latitude and longitude coordinates (in decimal), this 
     node outputs a series of Sun event objects at the appropriate time for each.</p>
     
     <p>Calculations are performed using the excellent <a href="https://github.com/mourner/suncalc">SunCalc module</a> and 
-    the resulting sun events are output from this node at the appropriate time for each:</p>
+    the resulting Sun events are output from this node at the appropriate time for each:</p>
     
     <ul>
-      <li>sunrise: sunrise (top edge of the sun appears on the horizon)</li>
-      <li>sunriseEnd: sunrise ends (bottom edge of the sun touches the horizon)</li>
+      <li>sunrise: sunrise (top edge of the Sun appears on the horizon)</li>
+      <li>sunriseEnd: sunrise ends (bottom edge of the Sun touches the horizon)</li>
       <li>goldenHourEnd: morning golden hour (soft light, best time for photography) ends</li>
-      <li>solarNoon: solar noon (sun is in the highest position)</li>
+      <li>solarNoon: solar noon (Sun is in the highest position)</li>
       <li>goldenHour: evening golden hour starts</li>
-      <li>sunsetStart: sunset starts (bottom edge of the sun touches the horizon)</li>
-      <li>sunset: sunset (sun disappears below the horizon, evening civil twilight starts)</li>
+      <li>sunsetStart: sunset starts (bottom edge of the Sun touches the horizon)</li>
+      <li>sunset: sunset (Sun disappears below the horizon, evening civil twilight starts)</li>
       <li>dusk: dusk (evening nautical twilight starts)</li>
       <li>nauticalDusk: nautical dusk (evening astronomical twilight starts)</li>
       <li>night: night starts (dark enough for astronomical observations)</li>
       <li>nightEnd: night ends (morning astronomical twilight starts)</li>
       <li>nauticalDawn: nautical dawn (morning nautical twilight starts)</li>
       <li>dawn: dawn (morning nautical twilight ends, morning civil twilight starts)</li>
-      <li>nadir: nadir (darkest moment of the night, sun is in the lowest position)</li>
+      <li>nadir: nadir (darkest moment of the night, Sun is in the lowest position)</li>
     </ul>
 
-    <h2>Usage</h2>
 
-    <p><i>Please Note: The latest version (version 3) of this node works a little differently to previous versions and will 
-        require a change to your flow if you are upgrading from a previous version.</i></p>       
+    <h2>Upgrading from v2.x</h2>
+    <p>The latest version (v3.0) of this node works a little differently to previous versions and will 
+        require a change to your flow if you are upgrading from a previous version.</p>  
+    <p>The latitude and longitude you defined in the node's
+       configuration can be used to calculate Sun events if no latitude and longitude coordinates 
+       are passed in the <i>msg.payload</i>. You <b>must</b> still inject a payload at regular 
+       intervals to recalculate the next 24 hour's events, but this payload can be any value.
+    </p>
+     
+          
+    <h2>Usage</h2>
     
-    <p>Each time this node receives a new `msg.payload` to it's input, it calculates up to 2 days worth of 
+    <p>Each time this node receives a new `msg.payload` to it's input, it calculates a minimum of 24 hours worth of 
         Sun events (depending on what time of day it is invoked). To have the node output events reliably every day, you should 
         inject a latitude and longitude payload into the node at least once every 24 hours. The easiest way to do this is with the node-red Inject node.</p>
 
@@ -115,10 +127,10 @@ msg.payload.lat = 51.501364
 msg.payload.lng = -0.1440787
     </pre>
 
-    <P>Calculations are performed using the Latitude and Longitude that are passed in via the payload. If you have a 
+    <p>Calculations are performed using the Latitude and Longitude that are passed in via the payload. If you have a 
     frequently changing GPS position it will update the Sun event calculations every time it receives a new latitude 
-    and longitude in the payload.</P>
-    
+    and longitude in the payload.</p>
+
     <h3>Output</h3>
     <P>The Sun event name is output in msg.payload.sunevent, preserving any other payload values set earlier in the 
     flow. It also outputs the event name and date & time of the event in msg.sunevent object if you need a more complete 
@@ -150,10 +162,10 @@ msg.payload.lng = -0.1440787
     <p>There are two example flows provided, one for a fixed GPS positioned injected daily and one for a stream of GPS coordinates that continually updates with your position.
         There is an example flow you can import supplied with this node.</p>
 
-    <p>Example 1: Fixed GPS position (<a href="./examples/sun-events-example-flows.json">Download</a>)
+    <p>Example 1: Fixed GPS position (<a href="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-example-flows.json" target="_blank">Download</a>)
     <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-1.png">
 
-    <p>Example 2: Stream of GPS positions (<a href="./examples/sun-events-gps-stream-example-flows.json">Download</a>)
+    <p>Example 2: Stream of GPS positions (<a href="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-gps-stream-example-flows.json" target="_blank">Download</a>)
     <img src="https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-2.png">
 
     <h2><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url">Say Thanks</a></h2>
@@ -167,7 +179,7 @@ msg.payload.lng = -0.1440787
 <!-- Finally, the node type is registered along with all of its properties   -->
 <!-- The example below shows a small subset of the properties that can be set-->
 <script type="text/javascript">
-    RED.nodes.registerType('sun-events',{
+    RED.nodes.registerType('sun events',{
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
         	testmode: {value:"N"},
@@ -184,7 +196,7 @@ msg.payload.lng = -0.1440787
         outputs:1,               // set the number of outputs - 0 to n
         icon: "white_golden_sun.png", //"white-globe.png",    // set the icon (held in public/icons)
         label: function() {      // sets the default label contents
-            return this.name||"sun-events";
+            return this.name||"sun events";
         },
         labelStyle: function() { // sets the class to apply to the label
             return this.name ? "" : "node_label_italic";

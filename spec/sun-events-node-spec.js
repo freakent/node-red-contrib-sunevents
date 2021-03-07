@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
+ * node-red-contrib-sunevents 
+ * This module provides a thin event emitting wrapper around the excellent SunCalc Module. 
  *
- *  Module Dependencies
- *  - node-red (https://nodered.org/)
- * 	- SunCalc (https://github.com/mourner/suncalc)
- *  - Luxon (http://moment.github.io./luxon)
- *  - uuid (https://www.npmjs.com/package/uuid)
- *  - debug (https://www.npmjs.com/package/debug)
  **/
 const helper = require("node-red-node-test-helper")
 const SunEventsNode = require("../lib/sun-events-node.js")
@@ -44,7 +39,7 @@ describe('sun-events Node', function () {
     });
 
     it('should be loaded', function (done) {
-        let flow = [{ id: "n1", type: "sun-events", name: "test name" }]
+        let flow = [{ id: "n1", type: "sun events", name: "test name" }]
         helper.load(SunEventsNode, flow, function () {
             try {
                 var n1 = helper.getNode("n1")
@@ -57,7 +52,7 @@ describe('sun-events Node', function () {
     });
 
     it('should initialise a set of sun events', function (done) {
-        var flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+        var flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, function () {
             var n1 = helper.getNode("n1");
             var n2 = helper.getNode("n2");
@@ -79,7 +74,7 @@ describe('sun-events Node', function () {
     it('should initialise a set of sun events with lat and lng as strings', function (done) {
         const test_lat_str = "51.501364"
         const test_lng_str = "-0.1440787"
-        const flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+        const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, function () {
             let n2 = helper.getNode("n2");
             let n1 = helper.getNode("n1");
@@ -100,7 +95,7 @@ describe('sun-events Node', function () {
 
     it('should use lat and long from node configuration if none supplied in msg.payload', function(done) {
         const test_credentials = { "n1": {'latitude': "51.501364", 'longitude': '-0.1440787' } }
-        const flow = [{ id: "n1", type: "sun-events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+        const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, test_credentials, function () {
             let n1 = helper.getNode("n1");
             let n2 = helper.getNode("n2");
