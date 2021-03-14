@@ -94,6 +94,7 @@ I used the original version of this node in my own set up to turn on house light
 ## Change History
 Version|Date|Description
 -------|----|-----------
+3.0.1|2021-03-14|Updates to examples and documentation
 3.0.0|2021-02-14|Major redesign to improve flexibility and the reliability of output. Drastically improved unit testing
 2.0.3|2020-03-03|Updated Readme and docs
 2.0.2|2020-02-28|More debugging and closer attention to anywhere where timezones could cause an issue
