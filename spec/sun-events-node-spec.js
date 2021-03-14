@@ -93,7 +93,7 @@ describe('sun-events Node', function () {
         });
     });
 
-    it('should use lat and long from node configuration if none supplied in msg.payload', function(done) {
+    it('should use lat and long from node configuration if none supplied in msg.payload, payload contains a date', function(done) {
         const test_credentials = { "n1": {'latitude': "51.501364", 'longitude': '-0.1440787' } }
         const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, test_credentials, function () {
@@ -102,9 +102,9 @@ describe('sun-events Node', function () {
             expect(n2).toEqual(jasmine.objectContaining({ type: 'helper' })) // Don't forget to pass "done" into the it function !!!
             n2.on("input", function (msg) {
                 try {
-                    expect(msg.payload.lat).toEqual(test_credentials.latitude)
+                    expect(msg.payload.lat).toEqual(test_credentials.latitude, "should match latitude")
                     expect(msg.payload.lng).toEqual(test_credentials.longitude)
-                    expect(events.includes(msg.payload.sunevent)).toBeTrue()
+                    expect(events.includes(msg.payload.sunevent)).toBeTrue(`sunevent ${msg.payload.sunevent} is not known`)
                     done();    
                 } catch(err) {
                     done(err)
@@ -112,7 +112,33 @@ describe('sun-events Node', function () {
             });
             spyOn(n1, "error")
             //n1.receive({ payload: {lat: test_credentials.latitude, lng: test_credentials.longitude }});
-            n1.receive({ payload: new Date() });
+            n1.receive({ payload: new Date() }) 
+            expect(n1.error).not.toHaveBeenCalled()
+            jasmine.clock().tick(1000 * 60 * 60 * 24)
+        });
+
+    })
+
+    it('should use lat and long from node configuration if none supplied in msg.payload, payload contains a string', function(done) {
+        const test_credentials = { "n1": {'latitude': "51.501364", 'longitude': '-0.1440787' } }
+        const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+        helper.load(SunEventsNode, flow, test_credentials, function () {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+            expect(n2).toEqual(jasmine.objectContaining({ type: 'helper' })) // Don't forget to pass "done" into the it function !!!
+            n2.on("input", function (msg) {
+                try {
+                    expect(msg.payload.lat).toEqual(test_credentials.latitude, "should match latitude")
+                    expect(msg.payload.lng).toEqual(test_credentials.longitude, "should match longitude")
+                    expect(events.includes(msg.payload.sunevent)).toBeTrue(`sunevent ${msg.payload.sunevent} is not known`)
+                    done();    
+                } catch(err) {
+                    done(err)
+                }
+            });
+            spyOn(n1, "error")
+            //n1.receive({ payload: {lat: test_credentials.latitude, lng: test_credentials.longitude }});
+            n1.receive({ payload: 'some random string' })
             expect(n1.error).not.toHaveBeenCalled()
             jasmine.clock().tick(1000 * 60 * 60 * 24)
         });
