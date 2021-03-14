@@ -73,17 +73,17 @@ Unlike previous versions of this node, this node DOES NOT perform it's own daily
 
 There are two example flows provided, one for a fixed GPS positioned injected daily and one for a stream of GPS coordinates that continually updates with your position.
 
-Example 1: Fixed GPS position [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-example-flows.json)
-![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-1.png "Example Flow")
+Example 1: Fixed GPS position [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/examples/sun-events-example-flows.json)
+![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/flow-diagram-1.png "Example Flow")
 
-Example 2: Stream of GPS positions [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/examples/sun-events-gps-stream-example-flows.json)
-![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/v3/docs/flow-diagram-2.png "Example Flow")
+Example 2: Stream of GPS positions [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/examples/sun-events-gps-stream-example-flows.json)
+![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/flow-diagram-2.png "Example Flow")
 
 
 ## [Say Thanks](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
 If you find this node useful and you want to say thanks, feel free to buy me a coffee using the link below. 
 
-[![Say Thanks](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/master/docs/thankyou.jpg "Say Thanks")
+[![Say Thanks](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/thankyou.jpg "Say Thanks")
 ](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
 
 
