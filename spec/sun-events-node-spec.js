@@ -70,7 +70,7 @@ describe('sun-events Node', function () {
                     done(err)
                 }
             });
-            for(let day = 0; day < 100; day++) {
+            for(let day = 0; day < 10; day++) {
                 n1.receive({ misc: "hello world", payload: {pi: 3.1459, latitude: test_lat, longitude: test_lng }});
                 jasmine.clock().tick(1000 * 60 * 60 * 24)
             }
@@ -152,7 +152,31 @@ describe('sun-events Node', function () {
             expect(n1.error).not.toHaveBeenCalled()
             jasmine.clock().tick(1000 * 60 * 60 * 24)
         });
-
     })
+
+    it('should fail gracefully if no lat or long is supplied', function(done) {
+            const test_credentials = { "n1": {} }
+            const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
+            helper.load(SunEventsNode, flow, test_credentials, function () {
+                let n1 = helper.getNode("n1");
+                let n2 = helper.getNode("n2");
+                expect(n2).toEqual(jasmine.objectContaining({ type: 'helper' })) // Don't forget to pass "done" into the it function !!!
+                n2.on("input", function (msg) {
+                    try {
+                        fail('no events should be output')
+                        done();    
+                    } catch(err) {
+                        done(err)
+                    }
+                });
+                spyOn(n1, "error")
+                spyOn(n2, "on")
+                n1.receive({ payload: 'some random string' })
+                expect(n1.error).toHaveBeenCalled()
+                jasmine.clock().tick(1000 * 60 * 60 * 24)
+                expect(n2.on).not.toHaveBeenCalled()
+                done()
+            });
+        })
 
 });
