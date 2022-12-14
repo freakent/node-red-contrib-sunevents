@@ -36,8 +36,8 @@
 	},
 	"devDependencies": {
 		"jasmine": "^3.6.4",
-		"node-red": "^1.2.9",
-		"node-red-node-test-helper": "^0.2.7",
+		"node-red": "^3.0.2",
+		"node-red-node-test-helper": "^0.3.0",
 		"nodemon": "^2.0.7",
 		"timezone-mock": "^1.0.17"
 	}
