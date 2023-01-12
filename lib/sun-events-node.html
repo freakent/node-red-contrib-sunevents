@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013-2021 Freak Enterprises
+  Copyright 2013-2023 Freak Enterprises
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -35,16 +35,14 @@
 
     <div class="form-row">
         <label><i class="fa fa-cog"></i> Options</label>
+        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-verbose" style="width: 70%;">Log messages to debug window?</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
         <input type="checkbox" id="node-input-testmode" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-testmode" style="width: 70%;">Make hours seem like minutes? (test mode)</label>
     </div>
-    <!-- 
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-verbose" style="width: 70%;">Log event calculations?</label>
-    </div>
-    -->
     <hr>
     <div class="form-row">
         <p><i class="fa fa-warning"></i> Latitude & Longitude</p>
@@ -69,7 +67,7 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="sun events">
-    <p><i>node-red-contrib-sunevents v3.0</i></p>
+    <p><i>node-red-contrib-sunevents v3.1</i></p>
     <p>A node that generates events based on the location of the Sun at the appropriate time of day. 
     This node can be used to make something happen based on a particular period of the day, for example, switching 
     on your lights at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
@@ -193,7 +191,7 @@ msg.payload.lng = -0.1440787
         },
         color:"#FFCC66",
         inputs:1,                // set the number of inputs - only 0 or 1
-        outputs:1,               // set the number of outputs - 0 to n
+        outputs:2,               // set the number of outputs - 0 to n
         icon: "white_golden_sun.png", //"white-globe.png",    // set the icon (held in public/icons)
         label: function() {      // sets the default label contents
             return this.name||"sun events";

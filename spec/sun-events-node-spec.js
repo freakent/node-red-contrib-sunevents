@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2021 Freak Enterprises
+ * Copyright 2013-2023 Freak Enterprises
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
  *
  **/
 const helper = require("node-red-node-test-helper")
+helper.init(require.resolve('node-red'));
+
 const SunEventsNode = require("../lib/sun-events-node.js")
 
 const test_lat = 37.53
@@ -51,7 +53,7 @@ describe('sun-events Node', function () {
         });
     });
 
-    it('should initialise a set of sun events', function (done) {
+    it('should initialise a set of sun events', function(done) {
         var flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"]] }, { id: "n2", type: "helper" }];
         helper.load(SunEventsNode, flow, function () {
             var n1 = helper.getNode("n1");
@@ -67,13 +69,16 @@ describe('sun-events Node', function () {
                     expect(events.includes(msg.payload.sunevent)).toBeTrue()
                     done();    
                 } catch(err) {
+                    console.log(err)
                     done(err)
                 }
             });
+        
             for(let day = 0; day < 10; day++) {
                 n1.receive({ misc: "hello world", payload: {pi: 3.1459, latitude: test_lat, longitude: test_lng }});
                 jasmine.clock().tick(1000 * 60 * 60 * 24)
             }
+
         });
     });
 
@@ -177,6 +182,45 @@ describe('sun-events Node', function () {
                 expect(n2.on).not.toHaveBeenCalled()
                 done()
             });
-        })
+    })
+    
+    it('should return a set of missed events in the payload', function (done) {
+        const start_date = new Date()
+        const test_lat_str = "51.501364"
+        const test_lng_str = "-0.1440787"
+        const flow = [{ id: "n1", type: "sun events", name: "test name", wires: [["n2"], ["n3"]] }, { id: "n2", type: "helper" }, { id: "n3", type: "helper" }];
+        helper.load(SunEventsNode, flow, function () {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+            let n3 = helper.getNode("n3");
+            n3.on("input", function (msg) {
+                try {
+                    expect(msg.payload["sunevents"]).withContext(`looking for missed sunevents in msg.payload ${JSON.stringify(msg.payload)}`).toBeDefined()
+
+                    let last_event = msg.payload.sunevents[0]
+                    expect(last_event.datetime)
+                        .withContext(`Most recent missed event ${last_event.datetime.toISOString()} should be older than our start date ${start_date.toISOString()}`)
+                        .toBeLessThan(start_date)
+
+                    let event_before_last = msg.payload.sunevents[1]
+                    expect(event_before_last.datetime)
+                        .withContext(`Missed event before last ${event_before_last.datetime.toISOString()} should be older than the last event ${last_event.datetime.toISOString()}`)
+                        .toBeLessThan(last_event.datetime)
+
+                    let event_count = msg.payload.sunevents.filter( e => e.event_name == last_event.event_name).length
+                    expect(event_count)
+                        .withContext(`Missed event ${last_event.event_name} should only appear once ${JSON.stringify(msg.payload.sunevents)}`)
+                        .toBe(1)
+
+                    done();    
+                } catch(err) {
+                    done(err)
+                }
+            });
+            n1.receive({ payload: {lat: test_lat_str, lng: test_lng_str }});
+            jasmine.clock().tick(1000 * 60 * 60 * 24)
+        });
+    });
+    
 
 });

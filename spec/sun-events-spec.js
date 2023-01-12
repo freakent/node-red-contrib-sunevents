@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2021 Freak Enterprises
+ * Copyright 2013-2023 Freak Enterprises
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ describe("Sun Events", function() {
         //console.log('sunevents', sunevents)
         expect(sunevents._proxy).toBe(this.proxy)
 
-        sunevents.add(DateTime.fromJSDate(test_date), "TEST", DateTime.fromJSDate(test_date).plus({hours: 6}) ) // add a dummy event, refresh should clear this down
+        sunevents.add_future_event(DateTime.fromJSDate(test_date), "TEST", DateTime.fromJSDate(test_date).plus({hours: 6}) ) // add a dummy event, refresh should clear this down
 
         expect(sunevents._events.length).toBe(1)
 
@@ -97,7 +97,7 @@ describe("Sun Events", function() {
 
         //console.log('sunevents', sunevents)
 
-        sunevents.add(test_start_date, "TEST", test_event_date )
+        sunevents.add_future_event(test_start_date, "TEST", test_event_date )
 
         expect(sunevents._events.length).toBe(1)
 
@@ -116,10 +116,39 @@ describe("Sun Events", function() {
         let sunevents = new SunEvents(this.proxy)
 
         expect(sunevents.next_event).toBeNull()
-        sunevents.add(test_start_date, "TEST", test_event_date)
+        sunevents.add_future_event(test_start_date, "TEST", test_event_date)
 
         expect(sunevents.next_event).toEqual({ event_name: "TEST", datetime: test_event_date.toISO()})
 
     })
+
+    it('builds a list of missed events a specific date', function() {
+        
+        let sunevents = new SunEvents(this.proxy)
+
+        //console.log('sunevents', sunevents)
+        expect(sunevents._proxy).toBe(this.proxy)
+
+        sunevents.add_future_event(DateTime.fromJSDate(test_date), "TEST", DateTime.fromJSDate(test_date).plus({hours: 6}) ) // add a dummy event, refresh should clear this down
+
+        expect(sunevents._events.length).toBe(1)
+
+        sunevents.refresh(test_lat, test_lng, test_date)
+
+        //console.log("events", sunevents._events)
+
+        expect(sunevents._events.length).toBe(25)
+
+        //console.log("Summary", sunevents._events.map( e => { return { name: e.event_name, datetime: e.datetime.toISO(), timer: e.timer/1000} } ))
+
+        expect(sunevents._events.map( e => e.event_name).join(", ")).toBe('dawn, sunrise, sunriseEnd, goldenHourEnd, solarNoon, goldenHour, sunsetStart, sunset, dusk, nauticalDusk, night, nadir, nightEnd, nauticalDawn, dawn, sunrise, sunriseEnd, goldenHourEnd, solarNoon, goldenHour, sunsetStart, sunset, dusk, nauticalDusk, night') 
+
+        jasmine.clock().tick(1000 * 60 * 60 * 24) // Fast forward 24 hrs
+        expect(this.proxy.sunevent).toHaveBeenCalledTimes(14) // 14 of the events should have fired
+        expect(sunevents._events.length).toBe(11) // Should only have 11 of the 25 left
+
+    })
+
+    
 
 })
