@@ -21,13 +21,18 @@ and the resulting Sun events are output from this node at the appropriate time:
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
 ## Upgrading from v2.x
-The latest version (v3.0) of this node works a little differently to previous versions and will 
+The 3.x version of this node works a little differently to previous versions and will 
 require a change to your flow if you are upgrading from a previous version.
 
-The latitude and longitude you defined in the node's configuration can be used to calculate 
+Passing latitude and longitude into the node in the <i>mss.payload/</i> is now the preferred option, but 
+the latitude and longitude you previously defined in the node's configuration can still be used to calculate 
 Sun events if no latitude and longitude coordinates 
-are passed in the <i>msg.payload</i>. You <b>must</b> still inject a payload at regular 
+are passed in the <i>msg.payload</i>. However, you <b>must</b> still inject a payload at regular 
 intervals to recalculate the next 24 hour's events, but this payload can be any value.
+
+Since this node now accepts an input payload, it's important that this node not overwrite or 
+lose any values you have already set in the msg.payload. So for consistency the Sun event name 
+is now output as <i>msg.payload.sunevent</i> (more information is also output in <i>msg.sunevent</i>, see Output section). 
 
 
 ## Usage
@@ -52,7 +57,7 @@ msg.payload.lng = <longitude in decimal format>
 Calculations are performed using the Latitude and Longitude that are passed in via the payload. If you have a frequently changing GPS position it will update the Sun event calculations every time it receives a new latitude and longitude in the payload. 
 
 
-### Output
+### Outputs
 The Sun event name is output in `msg.payload.sunevent`, preserving any other payload values set earlier in the flow. It also outputs the event name and date & time of the event in `msg.sunevent` object if you need a more complete set of Sun event data. The `msg.topic` can also be set in the node's configuration. 
 
 
@@ -63,6 +68,8 @@ The Sun event name is output in `msg.payload.sunevent`, preserving any other pay
 
 - Options:
 
+  - *Verbose*:
+    When enabled this setting outputs additional logging messages to the debug console
   - *Make Hours seem like minutes (test mode)*: 
     Reduces the time you have to wait for an event to fire, 1 hour becomes 1 minute. Obviously the Sun events won't fire at their correct times but if you are testing your flow it means you won't have to wait for hours to see that things are working. 
 
@@ -94,6 +101,8 @@ I used the original version of this node in my own set up to turn on house light
 ## Change History
 Version|Date|Description
 -------|----|-----------
+3.1.0|2023-01-14|Added new output for missed events and updated dependencies
+3.0.3|2021-03-19|Fixed issue with msg.payload
 3.0.2|2021-03-14|Fixed issue when preserving existing  msg.payload value
 3.0.1|2021-03-14|Updates to examples and documentation
 3.0.0|2021-02-14|Major redesign to improve flexibility and the reliability of output. Drastically improved unit testing
