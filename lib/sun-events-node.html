@@ -21,8 +21,6 @@
 
 <script type="text/x-red" data-template-name="sun events">   
     
-    <!-- By convention, most nodes have a 'name' property. The following div -->
-    <!-- provides the necessary field.                                       -->
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -35,8 +33,10 @@
 
     <div class="form-row">
         <label><i class="fa fa-cog"></i> Options</label>
+        <!--
         <input type="checkbox" id="node-input-verbose" placeholder="once" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-verbose" style="width: 70%;">Log messages to debug window?</label>
+        -->
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
@@ -68,15 +68,23 @@
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="sun events">
     <p><i>node-red-contrib-sunevents v3.1</i></p>
-    <p>A node that generates events based on the location of the Sun at the appropriate time of day. 
-    This node can be used to make something happen based on a particular period of the day, for example, switching 
-    on your lights at dusk every day or taking a photo a the darkest time of night ("nadir"). </p>
+    <p>
+        A node that emits events based on the location of the Sun at the appropriate time of day. This node can be used 
+        to make something happen at particular period of the day, for example switching on your lights at home at dusk 
+        every day or taking a photo a the darkest time of night ("nadir").
+    </p>
     
-    <p>On receiving a msg.payload containing latitude and longitude coordinates (in decimal), this 
-    node outputs a series of Sun event objects at the appropriate time for each.</p>
+    <p> 
+        On receiving a `msg.payload` containing latitude and longitude coordinates (in decimal), this node waits and then 
+        outputs a series of Sun event objects at the appropriate time for each. A secondary "missed events" output provides 
+        an array of the Sun events that have passed before this node was triggered with an input (See Missed Events for 
+        more details).
+    </p>
     
-    <p>Calculations are performed using the excellent <a href="https://github.com/mourner/suncalc">SunCalc module</a> and 
-    the resulting Sun events are output from this node at the appropriate time for each:</p>
+    <p>
+        Calculations are performed using the excellent <a href="https://github.com/mourner/suncalc">SunCalc module</a> and 
+        the resulting Sun events are output from this node at the appropriate time for each:
+    </p>
     
     <ul>
       <li>sunrise: sunrise (top edge of the Sun appears on the horizon)</li>
@@ -97,8 +105,10 @@
 
 
     <h2>Upgrading from v2.x</h2>
-    <p>The latest version (v3.0) of this node works a little differently to previous versions and will 
-        require a change to your flow if you are upgrading from a previous version.</p>  
+    <p>
+        Version v3.0 and later of this node works a little differently to previous versions and will 
+        require a change to your flow if you are upgrading from an earlier version.
+    </p>  
     <p>The latitude and longitude you defined in the node's
        configuration can be used to calculate Sun events if no latitude and longitude coordinates 
        are passed in the <i>msg.payload</i>. You <b>must</b> still inject a payload at regular 
@@ -129,23 +139,42 @@ msg.payload.lng = -0.1440787
     frequently changing GPS position it will update the Sun event calculations every time it receives a new latitude 
     and longitude in the payload.</p>
 
-    <h3>Output</h3>
-    <P>The Sun event name is output in msg.payload.sunevent, preserving any other payload values set earlier in the 
-    flow. It also outputs the event name and date & time of the event in msg.sunevent object if you need a more complete 
-    set of Sun event data. The msg.topic can also be set in the node's configuration.</P>
+    <h3>Outputs</h3>
+    <h5>Output 1 - Upcoming Sun Events</h5>
+    <p>
+        This node waits for the appropriate time and then outputs the appropriate sun event. The Sun event name is output in `msg.payload.sunevent`, 
+        preserving any other payload values set earlier in the flow. It also outputs the event name 
+        and date & time of the event in `msg.sunevent` object if you need a more complete set of Sun event data. The `msg.topic` can also be set in the 
+        node's configuration. 
+    </p>
+
+    <h5>Output 2 - Missed Sun Events</h5>
+    <p>
+        An array of Sun events that have occured before this node was invoked. The array is ordered so that the most recent missed 
+        event is at the start of the array (position 0). Which missed event is the most recent is entirely dependant on the time 
+        at which the node is invoked. Each array element is an object containing the event name (event_name) and the date & time (datetime) 
+        at which the event occurred. 
+    </p>
     
     <h3>Config</h3>
     <dl>
-    <dt><i>Name</i>:</dt> <dd>Override the default name of this node in the flow </dd>
-    <dt><i>Topic</i>:</dt> <dd>Set the topic used in the flow from this point onwards </dd>
-    <dt>Options: </dt> 
-    <dd>
-    <dl>
-        <dt><i>Make Hours seem like minutes (test mode)</i>: <dd>Reduces the time you have to wait for an event to fire, 
-            1 hour becomes 1 minute. Obviously the Sun events won't fire at their correct times but if you are 
-            testing your flow it means you won't have to wait for hours to see that things are working.</dd>
-    </dl>
-    </dd>
+        <dt> <i>Name</i>: </dt> <dd>Override the default name of this node in the flow </dd>
+        <dt> <i>Topic</i>: </dt> <dd>Set the topic used in the flow from this point onwards </dd>
+        <dt>Options: </dt>
+        <dd>
+            <dl>
+                <dt><i>Make Hours seem like minutes (test mode)</i>:</dt>
+                <dd>
+                    Reduces the time you have to wait for an event to fire, 1 hour becomes 1 minute. Obviously the Sun events won't 
+                    fire at their correct times but if you are testing your flow it means you won't have to wait for hours to see that things are working.
+                </dd>
+<!--                <dt><i>Verbose</i>:</dt>
+                <dd>
+                    Output additional logging messages to debug console.
+                </dd>
+--->
+            </dl>
+        </dd>
     </dl>
         
     <h2>Example Flow</h2>
