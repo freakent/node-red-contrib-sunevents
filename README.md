@@ -1,7 +1,7 @@
 # node-red-contrib-sunevents
-A node that generates events based on the location of the Sun at the appropriate time of day. This node can be used to make something happen based on a particular period of the day, for example switching on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir").
+A node that emits events based on the location of the Sun at the appropriate time of day. This node can be used to make something happen at particular period of the day, for example switching on your lights at home at dusk every day or taking a photo a the darkest time of night ("nadir").
 
-On receiving a `msg.payload` containing latitude and longitude coordinates (in decimal), this node outputs a series of Sun event objects at the appropriate time for each. 
+On receiving a `msg.payload` containing latitude and longitude coordinates (in decimal), this node waits and then outputs a series of Sun event objects at the appropriate time for each. A secondary "missed events" output provides an array of the Sun events that have passed before this node was triggered with an input (See Missed Events for more details).
 
 Calculations are performed using the excellent [SunCalc module](https://github.com/mourner/suncalc) 
 and the resulting Sun events are output from this node at the appropriate time:
@@ -20,9 +20,15 @@ and the resulting Sun events are output from this node at the appropriate time:
 * dawn: dawn (morning nautical twilight ends, morning civil twilight starts)
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
+## What's New - Missed Events 
+Whenever you invoke this node by passing an input there will be a series of Sun events that will have occurred already. 
+These are known as "missed events".  An array missed events is provided on the 2nd output immediately following receipt of 
+an input. Missed events maybe useful if you are initialising system state at start up (e.g. lights off or on), before you 
+receive the first emitted Sun event on output 1. 
+
 ## Upgrading from v2.x
-The 3.x version of this node works a little differently to previous versions and will 
-require a change to your flow if you are upgrading from a previous version.
+Version v3.0 and later of this node works a little differently to previous versions and will 
+require a change to your flow if you are upgrading from an earlier version.
 
 Passing latitude and longitude into the node in the <i>mss.payload/</i> is now the preferred option, but 
 the latitude and longitude you previously defined in the node's configuration can still be used to calculate 
@@ -58,8 +64,14 @@ Calculations are performed using the Latitude and Longitude that are passed in v
 
 
 ### Outputs
+### Output 1 - Upcoming Sun Events
+This node waits for the appropriate time and then outputs the appropriate sun event. 
 The Sun event name is output in `msg.payload.sunevent`, preserving any other payload values set earlier in the flow. It also outputs the event name and date & time of the event in `msg.sunevent` object if you need a more complete set of Sun event data. The `msg.topic` can also be set in the node's configuration. 
 
+### Output 2 - Missed Sun Events
+An array of Sun events that have occured before this node was invoked. The array is ordered so that the most recent missed 
+event is at the start of the array (position 0). Which missed event is the most recent is entirely dependant on the time 
+at which the node is invoked. Each array element is an object containing the event name (event_name) and the date & time (datetime) at which the event occurred. 
 
 ### Config
 - *Name*: Override the default name of this node in the flow
@@ -95,7 +107,7 @@ If you find this node useful and you want to say thanks, feel free to buy me a c
 
 
 ## Background
-I used the original version of this node in my own set up to turn on house lights at dusk. The whole system ran on a Raspberry Pi we have [hanging on the wall](http://www.freakent.co.uk/blog/2014/02/03/pretty-as-a-pi-cture-raspberry-pi-server-in-a-frame.html). The lights were controlled by a RFXCom RFXTRX433 USB device. Sitting between the Sunevents node and the RFX node is an MQTT persistent topic to hold system state, so if the Raspberry Pi is rebooted at any point during the day the system knows exactly what state it was in before the reboot. This set up ran with very little manual intervention for over 7 years in two different homes. At Christmas time it gets extended to switch on our outdoor Christmas lights too. I have recently switched to Sonoff wifi switches and Alexa is now doing the scheduling. So I have to confess this node is kind of redundant for me at the moment, but I am maintaining it in case it is helpful to others!
+I used the original version of this node in my own set up to turn on house lights at dusk. The whole system ran on a Raspberry Pi we have [hanging on the wall](http://www.freakent.co.uk/blog/2014/02/03/pretty-as-a-pi-cture-raspberry-pi-server-in-a-frame.html). The lights were controlled by a RFXCom RFXTRX433 USB device. Sitting between the Sunevents node and the RFX node is an MQTT persistent topic to hold system state, so if the Raspberry Pi is rebooted at any point during the day the system knows exactly what state it was in before the reboot. This set up ran with very little manual intervention for over 7 years in two different homes. At Christmas time it gets extended to switch on our outdoor Christmas lights too. I have recently switched to Sonoff wifi switches and Alexa is now doing the scheduling, so I have to confess this node is kind of redundant for me. I am maintaining it in case it is helpful to others!
 
 
 ## Change History
