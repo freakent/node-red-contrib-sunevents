@@ -20,11 +20,20 @@ and the resulting Sun events are output from this node at the appropriate time:
 * dawn: dawn (morning nautical twilight ends, morning civil twilight starts)
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
+
+## [Say Thanks](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
+If you find this node useful and you want to say thanks, feel free to buy me a coffee using the link below. 
+
+[![Say Thanks](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/thankyou.jpg "Say Thanks")
+](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
+
+
 ## What's New - Missed Events 
 Whenever you invoke this node by passing an input there will be a series of Sun events that will have occurred already. 
 These are known as "missed events".  An array missed events is provided on the 2nd output immediately following receipt of 
 an input. Missed events maybe useful if you are initialising system state at start up (e.g. lights off or on), before you 
 receive the first emitted Sun event on output 1. 
+
 
 ## Upgrading from v2.x
 Version v3.0 and later of this node works a little differently to previous versions and will 
@@ -97,13 +106,6 @@ Example 1: Fixed GPS position [Download](https://raw.githubusercontent.com/freak
 
 Example 2: Stream of GPS positions [Download](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/examples/sun-events-gps-stream-example-flows.json)
 ![Example Flow](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/flow-diagram-2.png "Example Flow")
-
-
-## [Say Thanks](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
-If you find this node useful and you want to say thanks, feel free to buy me a coffee using the link below. 
-
-[![Say Thanks](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/thankyou.jpg "Say Thanks")
-](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
 
 
 ## Background
