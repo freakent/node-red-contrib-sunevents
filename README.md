@@ -21,7 +21,7 @@ and the resulting Sun events are output from this node at the appropriate time:
 * nadir: nadir (darkest moment of the night, sun is in the lowest position)
 
 
-## [Say Thanks](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
+## [How To Say Thanks](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R4Y63PPPD4CGG&source=url)
 If you find this node useful and you want to say thanks, feel free to buy me a coffee using the link below. 
 
 [![Say Thanks](https://raw.githubusercontent.com/freakent/node-red-contrib-sunevents/main/docs/thankyou.jpg "Say Thanks")
